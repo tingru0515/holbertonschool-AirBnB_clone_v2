@@ -6,9 +6,13 @@ from models import storage
 import os
 
 
+storage_type = os.getenv("HBNB_TYPE_STORAGE")
+
+
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def setUp(self):
         """ Set up test environment """
         del_list = []
@@ -17,6 +21,15 @@ class test_fileStorage(unittest.TestCase):
         for key in del_list:
             del storage._FileStorage__objects[key]
 
+    @unittest.skipIf(storage_type != "db", "db storage in used")
+    def setUp(self):
+        """ Set up test environment """
+        del_list = []
+        for key in storage.all().keys():
+            del_list.append(key)
+        for key in del_list:
+            del storage.all()[key]
+
     def tearDown(self):
         """ Remove storage file at end of tests """
         try:
@@ -24,6 +37,7 @@ class test_fileStorage(unittest.TestCase):
         except:
             pass
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_obj_list_empty(self):
         """ __objects is initially empty """
         self.assertEqual(len(storage.all()), 0)
@@ -46,6 +60,7 @@ class test_fileStorage(unittest.TestCase):
         new = BaseModel()
         self.assertFalse(os.path.exists('file.json'))
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_empty(self):
         """ Data is saved to file """
         new = BaseModel()
@@ -54,12 +69,14 @@ class test_fileStorage(unittest.TestCase):
         new2 = BaseModel(**thing)
         self.assertNotEqual(os.path.getsize('file.json'), 0)
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_save(self):
         """ FileStorage save method """
         new = BaseModel()
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
@@ -69,6 +86,7 @@ class test_fileStorage(unittest.TestCase):
             loaded = obj
         self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_reload_empty(self):
         """ Load from an empty file """
         with open('file.json', 'w') as f:
@@ -80,12 +98,14 @@ class test_fileStorage(unittest.TestCase):
         """ Nothing happens if file does not exist """
         self.assertEqual(storage.reload(), None)
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_base_model_save(self):
         """ BaseModel save method calls storage save """
         new = BaseModel()
         new.save()
         self.assertTrue(os.path.exists('file.json'))
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_type_path(self):
         """ Confirm __file_path is string """
         self.assertEqual(type(storage._FileStorage__file_path), str)
@@ -94,6 +114,7 @@ class test_fileStorage(unittest.TestCase):
         """ Confirm __objects is a dict """
         self.assertEqual(type(storage.all()), dict)
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
@@ -102,8 +123,8 @@ class test_fileStorage(unittest.TestCase):
             temp = key
         self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
+    @unittest.skipIf(storage_type == "db", "db storage in used")
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(storage))
         self.assertEqual(type(storage), FileStorage)
