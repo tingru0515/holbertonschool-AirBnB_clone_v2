@@ -35,13 +35,16 @@ def n_number(n):
         return "Not a number", 404
 
 
-@app.route("/number_template/<n>", strict_slashes=False)
+# @app.route("/number_template/<n>", strict_slashes=False)
+# def html_page(n):
+#     try:
+#         number = int(n)
+#         return render_template("5-number.html", n=number)
+#     except ValueError:
+#         return "Not a number", 404
+@app.route("/number_template/<int:n>", strict_slashes=False)
 def html_page(n):
-    try:
-        number = int(n)
-        return render_template("5-number.html", n=number)
-    except ValueError:
-        return "Not a number", 404
+    return render_template("5-number.html", n=n)
 
 
 app.run(host="0.0.0.0", port=5000)
