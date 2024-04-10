@@ -34,6 +34,7 @@ def n_number(n):
     except ValueError:
         return "Not a number", 404
 
+
 @app.route("/number_template/<n>", strict_slashes=False)
 def html_page(n):
     try:
@@ -48,9 +49,11 @@ def odd_even_html(n):
     try:
         number = int(n)
         if number % 2 == 1:
-            return render_template("6-number_odd_or_even.html", n=number, odd_or_even="odd")
+            return render_template("6-number_odd_or_even.html",
+                                   n=number, odd_or_even="odd")
         else:
-            return render_template("6-number_odd_or_even.html", n=number, odd_or_even="even")
+            return render_template("6-number_odd_or_even.html",
+                                   n=number, odd_or_even="even")
     except ValueError:
         return "Not a number", 404
 

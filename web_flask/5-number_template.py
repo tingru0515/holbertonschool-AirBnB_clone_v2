@@ -34,6 +34,7 @@ def n_number(n):
     except ValueError:
         return "Not a number", 404
 
+
 @app.route("/number_template/<n>", strict_slashes=False)
 def html_page(n):
     try:
