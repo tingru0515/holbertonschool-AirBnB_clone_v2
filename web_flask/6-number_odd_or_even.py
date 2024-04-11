@@ -20,7 +20,7 @@ def c(text):
     return "C %s" % text.replace("_", " ")
 
 
-@app.route("/python/", defaults="is cool", strict_slashes=False)
+@app.route("/python/", defaults={"text": "is cool"}, strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def python(text):
     return "Python %s" % text.replace("_", " ")
@@ -58,4 +58,5 @@ def odd_even_html(n):
         return "Not a number", 404
 
 
-app.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
