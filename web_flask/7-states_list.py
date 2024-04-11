@@ -7,15 +7,15 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route("/states_list", strict_slashes=False)
-def states_list():
-    states = sorted(storage.all(State).values(), key=lambda x: x.name)
-    return render_template("7-states_list.html", states=states)
-
-
 @app.teardown_appcontext
 def teardown_db(exception):
     storage.close()
+
+
+@app.route("/states_list", strict_slashes=False)
+def states_list():
+    states = sorted(storage.all(State).values(), key=lambda state: state.name)
+    return render_template("7-states_list.html", states=states)
 
 
 if __name__ == "__main__":
