@@ -19,10 +19,10 @@
                 <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
                 {% endfor %}
             </UL>
-        {% elif states == [] %}
-            <H1>States</H1>
-        {% else %}
+        {% elif not_found %}
             <H1>Not found!</H1>
+        {% else %}
+            <H1>States</H1>
         {% endif %}
     </BODY>
 </HTML>
