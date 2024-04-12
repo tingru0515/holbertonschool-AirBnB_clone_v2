@@ -9,19 +9,16 @@ app = Flask(__name__)
 
 
 @app.route("/states", strict_slashes=False)
-def states():
-    states = sorted(storage.all(State).values(), key=lambda state: state.name)
-    return render_template("9-states.html", states=states)
-
-
 @app.route("/states/<id>", strict_slashes=False)
-def states_id(id):
-    state = storage.get(State, id)
-    if state:
-        cities = sorted(state.cities, key=lambda city: city.name)
-        return render_template("9-states.html", state=state, cities=cities)
-    else:
-        return render_template("9-states.html", state=None)
+def states_id(id=None):
+    states = sorted(storage.all(State).values(), key=lambda state: state.name) if states else []
+    the_state = None
+    if id:
+        the_state = next((state for state in states if state.id == id), None)
+        if the_state is not None:
+            the_state.cities = sorted(the_state.cities, key=lambda city:city.name)
+        states = None
+    return render_template("9-states.html", states=states, the_state=the_state)
 
 
 @app.teardown_appcontext
