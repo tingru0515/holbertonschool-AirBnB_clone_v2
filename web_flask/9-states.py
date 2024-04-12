@@ -8,29 +8,17 @@ from models.city import City
 app = Flask(__name__)
 
 
-@app.route("/states", strict_slashes=False)
-@app.route("/states/<id>", strict_slashes=False)
-def states_id(id=None):
-    all_states = storage.all(State).values()
-    data = []
-
-    for state in all_states:
-        item = {'state': state, 'cities': []}
-        cities = state.cities
-        if cities:
-            sorted_cities = sorted(cities, key=lambda c: c.name)
-            item['cities'] = sorted_cities
-        data.append(item)
-
+@app.route('/states', strict_slashes=False)
+@app.route('/states/<id>', strict_slashes=False)
+def states(id=None):
+    states = storage.all(State)
+    found = None
     if id:
-        the_state = storage.get(State, id)
-        if the_state:
-            return render_template("9-states.html", the_state=the_state)
-        else:
-            return render_template("9-states.html", not_found=True)
-    else:
-        sorted_states = sorted(all_states, key=lambda s: s.name)
-        return render_template("9-states.html", states=sorted_states)
+        for state in states.values():
+            if state.id == id:
+                found = True
+                break
+    return render_template('9-states.html', states=states, id=id, found=found)
     # all_states = storage.all(State).values()
 
     # if id:
