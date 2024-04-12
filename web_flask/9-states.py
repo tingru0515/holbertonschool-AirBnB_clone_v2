@@ -11,12 +11,8 @@ app = Flask(__name__)
 @app.route("/states", strict_slashes=False)
 @app.route("/states/<id>", strict_slashes=False)
 def states_id(id=None):
-    if states:
-        states = sorted(storage.all(State).values(),
-                        key=lambda state: state.name)
-    else:
-        states = []
-
+    states = sorted(storage.all(State).values(),
+                    key=lambda state: state.name) if states else []
     the_state = None
 
     if id:
