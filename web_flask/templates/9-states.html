@@ -15,9 +15,13 @@
             <H1>State: {{ the_state.name }}</H1>
             <H3>Cities:</H3>
             <UL>
-                {% for city in the_state.cities %}
-                <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-                {% endfor %}
+                {% if the_state.cities %}
+                    {% for city in the_state.cities %}
+                    <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+                    {% endfor %}
+                {% else %}
+                    <LI>No cities found.</LI>
+                {% endif %}
             </UL>
         {% elif not_found %}
             <H1>Not found!</H1>
